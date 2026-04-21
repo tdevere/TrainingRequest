@@ -18,9 +18,7 @@ _Nothing published yet._
 > Do not edit by hand — edits will be overwritten.
 
 <!-- INDEX:START -->
-| Title | Level / Duration | Status | File |
-| --- | --- | --- | --- |
-| From commit to running service: your first deployment | beginner / 135 minutes | draft | [from-commit-to-running-service-your-first-deployment.md](from-commit-to-running-service-your-first-deployment.md) |
+_Nothing published yet._
 <!-- INDEX:END -->
 
 ## How to use
