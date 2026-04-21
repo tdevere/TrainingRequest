@@ -60,3 +60,11 @@
   color: "d73a4a"
 - name: "needs:requestor"
   color: "d73a4a"
+
+# --- Testing / bootstrap ---
+- name: "test-mode"
+  color: "ededed"
+  description: Dogfooding / bootstrap testing. Single-person approval allowed.
+- name: "persona:fixture"
+  color: "ededed"
+  description: Synthetic requestor persona used for workflow testing.
