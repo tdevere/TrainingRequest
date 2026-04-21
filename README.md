@@ -49,6 +49,7 @@ For both:
 - **Request a development plan**: [open a PDP](../../issues/new?template=personal-development-plan.yml).
 - **Browse existing trainings**: [trainings/INDEX.md](trainings/INDEX.md).
 - **Browse existing PDPs**: [pdps/INDEX.md](pdps/INDEX.md).
+- **Drive a request through the workflow** (operator's how-to): [docs/OPERATOR-GUIDE.md](docs/OPERATOR-GUIDE.md).
 - **Understand the process**: [docs/WORKFLOW.md](docs/WORKFLOW.md), [docs/PDP-WORKFLOW.md](docs/PDP-WORKFLOW.md).
 
 ## Roles
