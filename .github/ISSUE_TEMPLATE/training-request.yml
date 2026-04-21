@@ -1,0 +1,107 @@
+name: Training Request
+description: Request a new training on a topic you want to learn or a skill you want to build.
+title: "[Training] <short topic>"
+labels: ["training-request", "state:new"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for requesting a training. Please fill in the fields below so the
+        AI intake agent and human reviewers can build you something useful.
+        You can edit this issue later — it will be updated as the request moves
+        through the workflow.
+
+  - type: input
+    id: topic
+    attributes:
+      label: Topic
+      description: One-line topic for the training.
+      placeholder: "e.g. Writing effective Azure Bicep modules"
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Why do you want this training?
+      description: What problem are you trying to solve, or what do you want to be able to do after taking it?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: level
+    attributes:
+      label: Target level
+      options:
+        - Beginner (no prior exposure)
+        - Intermediate (used it, want depth)
+        - Advanced (deep dive / edge cases)
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: format
+    attributes:
+      label: Preferred format
+      multiple: true
+      options:
+        - Self-paced written guide
+        - Hands-on lab / exercises
+        - Recorded walkthrough
+        - Live session
+        - Reference / cheatsheet
+    validations:
+      required: true
+
+  - type: input
+    id: duration
+    attributes:
+      label: Target duration
+      placeholder: "e.g. 30 minutes, 2 hours, half-day"
+    validations:
+      required: true
+
+  - type: textarea
+    id: outcomes
+    attributes:
+      label: Desired learning outcomes
+      description: "List 2–5 concrete things you should be able to DO after completing the training."
+      placeholder: |
+        - Write a parameterized Bicep module
+        - Publish a module to a private registry
+        - Consume a registry module from a deployment
+    validations:
+      required: true
+
+  - type: textarea
+    id: prior-knowledge
+    attributes:
+      label: What you already know
+      description: Helps the AI calibrate the starting point.
+    validations:
+      required: false
+
+  - type: textarea
+    id: existing-resources
+    attributes:
+      label: Existing resources you've tried
+      description: Links to docs, videos, repos, or prior trainings you've already seen.
+    validations:
+      required: false
+
+  - type: input
+    id: deadline
+    attributes:
+      label: Needed by (optional)
+      placeholder: "YYYY-MM-DD or 'no rush'"
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      options:
+        - label: I've checked [trainings/INDEX.md](../blob/main/trainings/INDEX.md) and no existing training covers this.
+          required: true
+        - label: I'm willing to provide feedback after taking the training.
+          required: true

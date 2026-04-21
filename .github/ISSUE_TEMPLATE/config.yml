@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Browse existing trainings
+    url: ../blob/main/trainings/INDEX.md
+    about: Check the training catalog before filing a new request.
+  - name: Browse existing PDPs
+    url: ../blob/main/pdps/INDEX.md
+    about: Browse personal development plans.

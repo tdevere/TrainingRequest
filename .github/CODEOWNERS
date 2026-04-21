@@ -1,0 +1,12 @@
+# Global owners — fallback reviewers for any change.
+*                           @tdevere
+
+# Training assets must be reviewed by the training leads and the assigned SME.
+/trainings/                 @tdevere
+
+# Personal development plans.
+/pdps/                      @tdevere
+
+# Workflow & process changes.
+/.github/                   @tdevere
+/docs/                      @tdevere

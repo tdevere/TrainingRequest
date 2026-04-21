@@ -1,0 +1,70 @@
+name: Training Feedback
+description: Feedback after completing a training. Link to the original training request.
+title: "[Feedback] <training topic>"
+labels: ["training-feedback", "state:feedback-collected"]
+body:
+  - type: input
+    id: training-ref
+    attributes:
+      label: Training request issue
+      description: "Link to the original training request issue (e.g. #42)."
+    validations:
+      required: true
+
+  - type: input
+    id: training-file
+    attributes:
+      label: Training asset path
+      description: "Path in /trainings/ you completed (e.g. trainings/bicep-modules.md)."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: outcomes-met
+    attributes:
+      label: Were the learning outcomes met?
+      options:
+        - Yes — all outcomes met
+        - Partially — some outcomes met
+        - No — outcomes not met
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-worked
+    attributes:
+      label: What worked well?
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-didnt
+    attributes:
+      label: What didn't work or was unclear?
+    validations:
+      required: false
+
+  - type: textarea
+    id: gaps
+    attributes:
+      label: Gaps or missing content
+    validations:
+      required: false
+
+  - type: dropdown
+    id: verdict
+    attributes:
+      label: Recommendation
+      options:
+        - Finalize — ready for the catalog as-is
+        - Iterate — needs revision before catalog
+        - Retire — not useful, don't publish
+    validations:
+      required: true
+
+  - type: textarea
+    id: iteration-notes
+    attributes:
+      label: If iterating, what should change?
+    validations:
+      required: false
