@@ -1,0 +1,143 @@
+name: Personal Development Plan
+description: Request a personalized development plan — a roadmap of skills, milestones, and training to reach a career or capability goal.
+title: "[PDP] <your goal in one line>"
+labels: ["pdp-request", "state:new"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A Personal Development Plan (PDP) is a longer-horizon roadmap for your growth.
+        Unlike a single Training Request, a PDP typically spans multiple skills / trainings
+        and includes milestones, mentors, and measurable outcomes.
+
+        The AI intake agent will use your answers to draft a proposed plan that a
+        human reviewer (and, if you choose, a mentor) will refine with you.
+
+  - type: input
+    id: goal
+    attributes:
+      label: Goal
+      description: One-sentence description of where you want to be.
+      placeholder: "e.g. Become proficient in Azure platform engineering within 6 months"
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why this goal?
+      description: What's driving this? Role change, project need, personal interest?
+    validations:
+      required: true
+
+  - type: input
+    id: horizon
+    attributes:
+      label: Target horizon
+      placeholder: "e.g. 3 months, 6 months, 12 months"
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-state
+    attributes:
+      label: Where are you today?
+      description: Current role, relevant skills, experience level.
+    validations:
+      required: true
+
+  - type: textarea
+    id: target-state
+    attributes:
+      label: Where do you want to be?
+      description: "Concrete capabilities you want to have. Ideally 3–7 items."
+      placeholder: |
+        - Design and deploy AKS clusters with IaC
+        - Lead an incident response exercise
+        - Mentor a junior engineer on SRE basics
+    validations:
+      required: true
+
+  - type: textarea
+    id: strengths
+    attributes:
+      label: Strengths to build on
+    validations:
+      required: false
+
+  - type: textarea
+    id: gaps
+    attributes:
+      label: Known gaps
+    validations:
+      required: false
+
+  - type: dropdown
+    id: time-per-week
+    attributes:
+      label: Time available per week for learning
+      options:
+        - "1–2 hours"
+        - "3–5 hours"
+        - "6–10 hours"
+        - "10+ hours"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: preferred-learning
+    attributes:
+      label: Preferred learning modes
+      multiple: true
+      options:
+        - Self-paced written
+        - Hands-on labs / projects
+        - Videos / recorded
+        - Live sessions / workshops
+        - Mentoring / pairing
+        - Reading (books, papers)
+        - Shadowing real work
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mentor-wanted
+    attributes:
+      label: Do you want a human mentor assigned?
+      options:
+        - "Yes — please pair me with a mentor"
+        - "Maybe — suggest one in the plan"
+        - "No — self-directed is fine"
+      default: 1
+    validations:
+      required: true
+
+  - type: textarea
+    id: success-metrics
+    attributes:
+      label: How will you (and we) measure success?
+      description: "Concrete, observable signals. Avoid 'feel more confident'."
+      placeholder: |
+        - Ship 1 production service using AKS
+        - Pass AZ-400 certification
+        - Deliver an internal talk on GitOps
+    validations:
+      required: true
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints
+      description: Deadlines, budget limits, access issues, conflicting commitments.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      options:
+        - label: I understand a PDP may include multiple Training Requests as sub-items.
+          required: true
+        - label: I'm willing to review progress with the reviewer/mentor at agreed checkpoints.
+          required: true

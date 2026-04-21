@@ -1,0 +1,97 @@
+name: Index catalog
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'trainings/**.md'
+      - 'pdps/**.md'
+      - '.github/workflows/index-trainings.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build indexes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          get_field() {
+            local file="$1" key="$2"
+            awk -v k="$key" '
+              BEGIN{n=0}
+              /^---[[:space:]]*$/{n++; if (n==2) exit; next}
+              n==1 {
+                if ($0 ~ "^" k ":") {
+                  sub("^" k ": *", "", $0)
+                  gsub(/^"/, "", $0); gsub(/"$/, "", $0)
+                  print; exit
+                }
+              }
+            ' "$file"
+          }
+
+          build_index() {
+            local dir="$1" header="$2" outfile="$dir/INDEX.md"
+            local tmp; tmp=$(mktemp)
+            {
+              echo "| Title | $header | Status | File |"
+              echo "| --- | --- | --- | --- |"
+            } > "$tmp"
+
+            shopt -s nullglob
+            local found=0
+            for f in "$dir"/*.md; do
+              local base; base=$(basename "$f")
+              case "$base" in _template.md|INDEX.md|README.md) continue ;; esac
+              local title level duration status horizon extra
+              title=$(get_field "$f" title)
+              status=$(get_field "$f" status)
+              [ -z "$title" ] && title="$base"
+              if [ "$dir" = "trainings" ]; then
+                level=$(get_field "$f" level)
+                duration=$(get_field "$f" duration)
+                extra="${level:-} / ${duration:-}"
+              else
+                horizon=$(get_field "$f" horizon)
+                extra="${horizon:-}"
+              fi
+              echo "| $title | $extra | ${status:-} | [$base]($base) |" >> "$tmp"
+              found=1
+            done
+
+            if [ "$found" -eq 0 ]; then
+              echo "_Nothing published yet._" > "$tmp"
+            fi
+
+            awk -v repl="$(cat "$tmp")" '
+              BEGIN{inblock=0}
+              /<!-- INDEX:START -->/ {print; print repl; inblock=1; next}
+              /<!-- INDEX:END -->/ {inblock=0}
+              !inblock {print}
+            ' "$outfile" > "$outfile.new"
+            mv "$outfile.new" "$outfile"
+          }
+
+          build_index trainings "Level / Duration"
+          build_index pdps "Horizon"
+
+      - name: Commit updated indexes
+        shell: bash
+        run: |
+          if git diff --quiet trainings/INDEX.md pdps/INDEX.md; then
+            echo "No index changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add trainings/INDEX.md pdps/INDEX.md
+          git commit -m "chore: refresh catalog indexes"
+          git push

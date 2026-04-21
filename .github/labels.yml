@@ -1,0 +1,62 @@
+# Canonical labels for this repo.
+# Apply with: gh label create -f .github/labels.yml  (via a sync action, see workflows)
+
+# --- Kinds ---
+- name: training-request
+  color: "1f77b4"
+  description: A request for a new training.
+- name: training-feedback
+  color: "9467bd"
+  description: Feedback on a completed training.
+- name: pdp-request
+  color: "2ca02c"
+  description: A request for a personal development plan.
+
+# --- Workflow states ---
+- name: "state:new"
+  color: "cccccc"
+  description: Just filed. Awaiting AI intake.
+- name: "state:intake"
+  color: "bfd4f2"
+  description: AI is asking clarifying questions.
+- name: "state:plan-drafted"
+  color: "fbca04"
+  description: AI has proposed a training plan.
+- name: "state:plan-approved"
+  color: "0e8a16"
+  description: Reviewer approved the plan.
+- name: "state:content-building"
+  color: "fbca04"
+  description: AI is drafting training content.
+- name: "state:content-verified"
+  color: "0e8a16"
+  description: SME verified the content.
+- name: "state:delivered"
+  color: "5319e7"
+  description: Training shared with requestor.
+- name: "state:feedback-collected"
+  color: "9467bd"
+  description: Requestor submitted feedback.
+- name: "state:iterating"
+  color: "fbca04"
+  description: Iteration requested based on feedback.
+- name: "state:complete"
+  color: "0e8a16"
+  description: Training finalized and catalogued.
+- name: "state:retired"
+  color: "b60205"
+  description: Not published; closed without catalog entry.
+
+# --- Metadata ---
+- name: "level:beginner"
+  color: "e4e669"
+- name: "level:intermediate"
+  color: "e4a619"
+- name: "level:advanced"
+  color: "d93f0b"
+- name: "needs:reviewer"
+  color: "d73a4a"
+- name: "needs:sme"
+  color: "d73a4a"
+- name: "needs:requestor"
+  color: "d73a4a"
