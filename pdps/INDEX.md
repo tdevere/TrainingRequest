@@ -4,7 +4,7 @@
 > Do not edit by hand.
 
 <!-- INDEX:START -->
-_No PDPs published yet._
+_Nothing published yet._
 <!-- INDEX:END -->
 
 ## About

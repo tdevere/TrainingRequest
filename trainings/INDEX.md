@@ -4,7 +4,7 @@
 > Do not edit by hand — edits will be overwritten.
 
 <!-- INDEX:START -->
-_No trainings published yet._
+_Nothing published yet._
 <!-- INDEX:END -->
 
 ## How to use
