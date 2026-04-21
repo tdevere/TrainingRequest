@@ -6,9 +6,13 @@
 stateDiagram-v2
     [*] --> New: Requestor files issue
     New --> Intake: AI picks up
-    Intake --> PlanDrafted: AI posts plan
-    PlanDrafted --> PlanApproved: Reviewer approves
-    PlanDrafted --> Intake: Reviewer requests changes
+    Intake --> PlanDrafted: Intake agent posts plan
+    PlanDrafted --> AIReviewing: Auto-hand-off to critic
+    AIReviewing --> PlanRevising: Critic says REVISE
+    PlanRevising --> AIReviewing: Intake agent re-posts
+    AIReviewing --> PlanReadyForHuman: Critic says PASS (or escalation)
+    PlanReadyForHuman --> PlanApproved: Reviewer approves
+    PlanReadyForHuman --> Intake: Reviewer requests changes
     PlanApproved --> ContentBuilding: AI starts build
     ContentBuilding --> ContentVerified: SME verifies
     ContentBuilding --> ContentBuilding: SME requests fixes
@@ -21,6 +25,10 @@ stateDiagram-v2
     Complete --> [*]
     Retired --> [*]
 ```
+
+> `PlanReadyForHuman` is the state `state:plan-drafted` + `needs:reviewer`
+> reached only after the Critic Agent approves the draft against
+> [.github/agents/plan-rubric.md](../.github/agents/plan-rubric.md).
 
 ## Stage details
 
@@ -37,14 +45,23 @@ stateDiagram-v2
 - **Label**: `state:intake`
 
 ### 3. Plan drafted — AI proposes a training plan
-- AI posts a plan comment containing:
-  - Outline (modules / sections)
-  - Learning objectives mapped to requested outcomes
-  - Format(s) chosen
-  - Estimated effort to build
-  - Prerequisites
-  - Proposed SME (if known)
-- **Label**: `state:plan-drafted`, `needs:reviewer`
+- Intake Agent posts a plan comment that copies the full **Plan
+  Acceptance Form** from [docs/PLAN-ACCEPTANCE-FORM.md](PLAN-ACCEPTANCE-FORM.md)
+  with every field filled in. Blank fields are rejected.
+- **Label**: `state:plan-drafted` → immediately handed off as
+  `state:ai-reviewing`.
+
+### 3b. AI review — Critic Agent scores the plan
+- **Who**: Critic Agent (see [.github/agents/critic-agent.md](../.github/agents/critic-agent.md))
+- **Does**: scores the plan against each rubric dimension in
+  [.github/agents/plan-rubric.md](../.github/agents/plan-rubric.md),
+  posts a table with evidence, and issues one of:
+  - **PASS** → promote to `state:plan-drafted` + `needs:reviewer` for a human.
+  - **REVISE** → set `state:plan-revising`; Intake Agent addresses the
+    numbered revision requests and re-posts.
+  - **ESCALATE** (round 3+) → promote to human review with the critic
+    history attached.
+- **Cap**: 3 critic rounds; then escalate.
 
 ### 4. Plan approved — Human reviewer gate #1
 - **Who**: Reviewer (training lead)

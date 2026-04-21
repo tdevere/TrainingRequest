@@ -66,16 +66,23 @@ issue.
 
 ### Stage 2 — Approve (or revise) the training plan ← **Reviewer gate**
 
-**When:** Issue is `state:plan-drafted` + `needs:reviewer`. Copilot has
-posted a comment titled "Proposed training plan" or "Proposed Personal
-Development Plan".
+**When:** Issue is `state:plan-drafted` + `needs:reviewer`. A **Critic
+Agent has already scored the plan** and posted a `🟢 Critic Agent — PASS`
+or `🚨 ESCALATION` comment directly above. Read that comment first — it
+tells you which dimensions are weak and what residual risks remain.
+
+> While the issue is in `state:ai-reviewing` or `state:plan-revising`,
+> **don't act**. The AI critic loop is running. It caps at 3 rounds and
+> will hand the issue to you automatically with `needs:reviewer` when it
+> either PASSes or escalates.
 
 **What to check** before approving:
-- Are the learning outcomes observable? ("can deploy X" not "understands X")
-- Are they aligned with what the requestor actually asked for?
-- Is the format mix sensible for the requestor's stated time budget?
+- The Critic Agent's evidence table — do the scores look fair?
+- Any `WEAK` dimensions the critic flagged — acceptable, or block merge?
+- Are the learning outcomes observable and aligned with the request?
+- Does the Plan Acceptance Form fit the stated learner time budget?
 - Does the proposed SME make sense? (Use `tbd` if no one fits.)
-- Any unanswered "Open questions for reviewer" the agent flagged?
+- Any "Open questions for reviewer" the agent flagged?
 
 **Do this (test mode, since you're solo for now):**
 

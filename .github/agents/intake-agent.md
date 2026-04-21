@@ -37,83 +37,51 @@ Keep comments concise and skimmable. Use checklists and headings.
    **single consolidated comment** with numbered questions (max 5):
    - Training: learning outcomes, level, format, duration, prerequisites.
    - PDP: goal, target capabilities, success metrics, horizon, time per week.
-4. Once you have enough context, draft the plan (templates below) as a new
-   comment, then update labels:
+4. Once you have enough context, draft the plan using the **Plan Acceptance
+   Form** from [docs/PLAN-ACCEPTANCE-FORM.md](../../docs/PLAN-ACCEPTANCE-FORM.md)
+   as a new comment. **Fill every field.** Blank fields will be rejected
+   by the Critic Agent.
+5. Update labels to hand off to the Critic Agent:
    - Remove: `state:intake`, `needs:requestor` (if set).
-   - Add: `state:plan-drafted`, `needs:reviewer`.
-5. Stop. Do not proceed to content building until a human approves the plan.
+   - Add: `state:ai-reviewing`.
+6. Stop. Do NOT tag the human reviewer yet. The Critic Agent will either
+   return the issue to you with revisions (`state:plan-revising`) or
+   promote it to `state:plan-drafted` + `needs:reviewer`.
 
-## Training plan comment template
+### Revision loop
+
+If the issue returns to you with label `state:plan-revising` and a
+Critic Agent comment containing numbered revision requests:
+
+1. Address each numbered revision in order. Don't partially address; the
+   critic will fail the plan again.
+2. Re-post the **full, updated Plan Acceptance Form** (not a diff). A
+   complete fresh form is easier for the critic to re-score.
+3. Set labels: remove `state:plan-revising`, add `state:ai-reviewing`.
+4. Stop.
+
+After 3 total critic rounds the critic will escalate to a human reviewer
+regardless of state; respect that and do not continue revising.
+
+## Plan comment templates
+
+Use the canonical **Plan Acceptance Form** defined in
+[docs/PLAN-ACCEPTANCE-FORM.md](../../docs/PLAN-ACCEPTANCE-FORM.md).
+Copy the relevant block (Training or PDP) into your comment verbatim and
+fill in every field. Do not invent alternative sections. Do not skip
+fields; use `n/a` with a one-line justification if genuinely inapplicable.
+
+Structure of your comment:
 
 ```
-### Proposed training plan
+### Proposed plan (round N)
 
-**Topic:** <topic>
-**Level:** <beginner | intermediate | advanced>
-**Format:** <chosen formats>
-**Estimated duration:** <e.g. 60 min of learner time>
-**Estimated build effort:** <S | M | L>
+<brief 2–3 sentence summary of the approach>
 
-**Learning outcomes** (mapped to requestor's asks):
-- [ ] <outcome>
-- [ ] <outcome>
-
-**Outline**
-1. <section> — <key points>
-2. <section> — <key points>
-3. <section> — <key points>
-
-**Prerequisites**
-- <item>
-
-**Proposed SME:** @<handle or "tbd">
-
-**Open questions for reviewer**
-- <any trade-offs the reviewer should weigh>
+<the full Plan Acceptance Form with every field filled>
 
 ---
-Next step: Reviewer approves by commenting `/approve-plan` or applying label
-`state:plan-approved`.
-```
-
-## PDP plan comment template
-
-```
-### Proposed Personal Development Plan
-
-**Goal:** <goal>
-**Horizon:** <months>
-**Time budget:** <hrs/week>
-
-**Target capabilities**
-- [ ] <capability>
-- [ ] <capability>
-
-**Success metrics** (measurable)
-- [ ] <metric>
-- [ ] <metric>
-
-**Roadmap**
-- **Milestone 1 (weeks 1–N):** <objective>
-  - Linked trainings (to be filed): <titles>
-  - Checkpoint: <date>
-- **Milestone 2 (weeks N–M):** <objective>
-  - ...
-- **Milestone 3:** <objective>
-
-**Mentor recommendation:** <@handle or "self-directed">
-
-**Linked Training Requests to be opened after approval**
-- <title>
-- <title>
-
-**Open questions for reviewer**
-- <items>
-
----
-Next step: Reviewer approves by commenting `/approve-plan` or applying label
-`state:plan-approved`. On approval, the AI will open the linked Training
-Requests as sub-issues and add a PDP file under `/pdps/` via PR.
+Handing off to Critic Agent. See `.github/agents/critic-agent.md`.
 ```
 
 ## Guardrails

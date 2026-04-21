@@ -1,0 +1,74 @@
+name: Critic handoff
+
+# Wires the AI review loop: when the Intake Agent posts a plan
+# (state:plan-drafted), this workflow hands off to the Critic Agent
+# by setting state:ai-reviewing and @-mentioning Copilot with the
+# critic system prompt.
+#
+# It also handles the revision loop when the Critic Agent sets
+# state:plan-revising — it pings the Intake Agent to revise.
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  handoff-to-critic:
+    if: github.event.label.name == 'state:plan-drafted'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Advance to ai-reviewing and ping critic
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = { owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number };
+
+            // If needs:reviewer is already set, a critic has already promoted the plan to human review.
+            // Do nothing in that case — the Reviewer is the next actor.
+            const { data: fresh } = await github.rest.issues.get(issue);
+            const names = (fresh.labels || []).map(l => l.name || l);
+            if (names.includes('needs:reviewer')) {
+              core.info('Plan already promoted to human review; no handoff needed.');
+              return;
+            }
+
+            await github.rest.issues.removeLabel({ ...issue, name: 'state:plan-drafted' }).catch(() => {});
+            await github.rest.issues.addLabels({ ...issue, labels: ['state:ai-reviewing'] });
+
+            await github.rest.issues.createComment({
+              ...issue,
+              body: [
+                "### Handing off to Critic Agent",
+                "",
+                "@github-copilot please run the **Critic Agent** using `.github/agents/critic-agent.md` to score the latest Plan Acceptance Form comment against `.github/agents/plan-rubric.md`.",
+                "",
+                "- If PASS → set `state:plan-drafted` + `needs:reviewer`.",
+                "- If REVISE → set `state:plan-revising` and return to the Intake Agent.",
+                "- Round cap: 3.",
+              ].join("\n"),
+            });
+
+  handoff-to-intake-for-revision:
+    if: github.event.label.name == 'state:plan-revising'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping intake agent to revise
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = { owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number };
+
+            await github.rest.issues.createComment({
+              ...issue,
+              body: [
+                "### Back to Intake Agent for revision",
+                "",
+                "@github-copilot please run the **Intake Agent** using `.github/agents/intake-agent.md`.",
+                "Address the numbered revisions in the latest Critic Agent comment and re-post the **full** Plan Acceptance Form.",
+                "When done, remove `state:plan-revising` and add `state:ai-reviewing`.",
+              ].join("\n"),
+            });

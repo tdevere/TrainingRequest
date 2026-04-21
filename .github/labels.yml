@@ -22,6 +22,12 @@
 - name: "state:plan-drafted"
   color: "fbca04"
   description: AI has proposed a training plan.
+- name: "state:ai-reviewing"
+  color: "fbca04"
+  description: AI critic is evaluating the plan against the rubric.
+- name: "state:plan-revising"
+  color: "fbca04"
+  description: Drafter is revising based on critic feedback.
 - name: "state:plan-approved"
   color: "0e8a16"
   description: Reviewer approved the plan.
