@@ -39,7 +39,9 @@ jobs:
           }
 
           build_index() {
-            local dir="$1" header="$2" outfile="$dir/INDEX.md"
+            local dir="$1"
+            local header="$2"
+            local outfile="$dir/INDEX.md"
             local tmp; tmp=$(mktemp)
             {
               echo "| Title | $header | Status | File |"
