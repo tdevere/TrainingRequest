@@ -60,3 +60,13 @@ See [docs/ROLES.md](docs/ROLES.md). Short version:
 - **Reviewer** — approves the training plan.
 - **SME** — verifies built content for accuracy.
 - **Maintainer** — merges, tags releases, closes the loop.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Maintainers: see
+[docs/MAINTAINERS.md](docs/MAINTAINERS.md) for one-time setup (including
+enabling the Copilot coding agent) and recurring triage tasks.
+
+## Code of Conduct
+
+See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
