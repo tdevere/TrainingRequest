@@ -1,7 +1,7 @@
 ---
 title: "From commit to running service: your first deployment"
 slug: "from-commit-to-running-service-your-first-deployment"
-request_issue: "#1"
+request_issue: 1
 level: "beginner"
 format: ["written", "lab"]
 duration: "~2 hours"
