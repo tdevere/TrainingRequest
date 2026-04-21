@@ -12,3 +12,6 @@ npm-debug.log*
 __pycache__/
 *.pyc
 .venv/
+
+# Local scratch for gh issue bodies etc.
+.test/
